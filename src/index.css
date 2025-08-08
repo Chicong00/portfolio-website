@@ -321,3 +321,124 @@
     border-radius: 40% 70% 50% 60% / 80% 50% 60% 40%;
   }
 }
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}
+
+/* File content specific styles */
+.file-content-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+}
+
+.file-content-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.file-content-scroll::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+.file-content-scroll::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+.file-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}
+
+/* Ensure text wrapping and visibility */
+.file-content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.file-content code {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Organic background animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Organic background shapes */
+.organic-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.flowing-shapes {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, hsl(var(--primary) / 0.1), hsl(var(--accent) / 0.1));
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.flowing-shapes:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.flowing-shapes:nth-child(2) {
+  top: 60%;
+  right: 15%;
+  animation-delay: -2s;
+}
+
+.flowing-shapes:nth-child(3) {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: -4s;
+}
+
+.flowing-shapes:nth-child(4) {
+  top: 30%;
+  right: 30%;
+  animation-delay: -6s;
+}
