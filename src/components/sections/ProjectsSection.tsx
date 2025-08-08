@@ -7,13 +7,13 @@ import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
   {
-    title: "Sales Performance Dashboard",
-    description: "Comprehensive analytics dashboard for tracking sales metrics, customer behavior, and revenue trends using Python, SQL, and Tableau.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
-    technologies: ["Python", "SQL", "Tableau", "Pandas"],
-    githubUrl: "#",
+    title: "8 Week SQL Challenge",
+    description: "Working with real-world scenarios and datasets by practicing various SQL concepts and techniques, including joins, aggregations, subqueries, window functions, and data cleaning.",
+    image: "images/8-week-sql.png",
+    technologies: ["PostgreSQL", "VSCode"],
+    githubUrl: "https://github.com/Chicong00/8-week-SQL-challenge.git",
     liveUrl: "#",
-    category: "Business Intelligence"
+    category: "Data Analysis"
   },
   {
     title: "Customer Churn Prediction Model",
@@ -96,11 +96,11 @@ export function ProjectsSection() {
               transition={{ duration: 0.8, delay: index * 0.2 }}
             >
               <Card className="card-elegant group hover:scale-105 transition-bounce overflow-hidden h-full">
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden bg-muted/20 flex items-center justify-center h-48">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="w-full max-h-full object-contain object-center transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
@@ -129,13 +129,27 @@ export function ProjectsSection() {
                   </div>
                   
                   <div className="flex gap-3 mt-auto">
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Github className="mr-2 h-4 w-4" />
-                      Code
+                    <Button asChild variant="outline" size="sm" className="flex-1">
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} code on GitHub`}
+                      >
+                        <Github className="mr-2 h-4 w-4" />
+                        Code
+                      </a>
                     </Button>
-                    <Button size="sm" className="flex-1">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Demo
+                    <Button asChild size="sm" className="flex-1" disabled={!project.liveUrl || project.liveUrl === "#"}>
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} live demo`}
+                      >
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        Demo
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
