@@ -1,13 +1,11 @@
 # **The project is in progress**
 *Coming soon*
 
-## Project info
+## Live demo
 
-**URL**: https://lovable.dev/projects/4732f0ca-7d8c-4b2c-acdc-b6d0599a1c13
+**Check it out**: [Link](https://lovable.dev/projects/4732f0ca-7d8c-4b2c-acdc-b6d0599a1c13)
 
-## How can I edit this code?
-
-There are several ways of editing your application.
+## The story behind
 
 **Use Lovable**
 
