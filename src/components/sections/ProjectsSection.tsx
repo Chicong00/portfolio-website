@@ -362,27 +362,10 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header - Always Visible */}
-                  <div className="p-6 border-b border-border/50">
-                    <h2 className="text-2xl font-bold text-primary mb-2">
-                      {selectedProjectData.title}
-                    </h2>
-                    <p className="text-muted-foreground mb-4">
-                      {selectedProjectData.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProjectData.technologies.map((tech) => (
-                        <Badge key={tech} variant="outline" className="text-xs">
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* File Content or Project Overview */}
                   <div className="flex-1 min-h-0">
                     {selectedFile ? (
-                      <div className="h-full bg-muted/20 overflow-hidden">
+                      <div className="h-full bg-muted/20 rounded-lg border border-border/50 overflow-hidden">
                         <CodeViewer 
                           content={fileContent} 
                           language={selectedProjectData.files.find(f => f.name === selectedFile)?.type || 'text'} 
@@ -390,6 +373,22 @@ export function ProjectsSection() {
                       </div>
                     ) : (
                       <div className="p-6 space-y-6">
+                        {/* Project Header */}
+                        <div>
+                          <h2 className="text-2xl font-bold text-primary mb-2">
+                            {selectedProjectData.title}
+                          </h2>
+                          <p className="text-muted-foreground mb-4">
+                            {selectedProjectData.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedProjectData.technologies.map((tech) => (
+                              <Badge key={tech} variant="outline" className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
                         <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
                           <img
                             src={selectedProjectData.image}
