@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Database, Code, BarChart3, ChevronDown, ChevronRight, FileText, FileCode } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getProjectFile } from "@/lib/projectFiles";
+import { CodeViewer } from "@/components/CodeViewer";
 
 const projectCategories = [
   {
