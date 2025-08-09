@@ -362,31 +362,47 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header */}
-                  <div className="p-6 border-b border-border/50 flex-shrink-0">
-                    <h2 className="text-2xl font-bold text-primary mb-2">
-                      {selectedProjectData.title}
-                    </h2>
-                    <p className="text-muted-foreground mb-4">
-                      {selectedProjectData.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProjectData.technologies.map((tech) => (
-                        <Badge key={tech} variant="outline" className="text-xs">
-                          {tech}
-                        </Badge>
-                      ))}
+                  {/* Project Header - ONLY for folder, not file */}
+                  {!selectedFile && (
+                    <div className="p-6 border-b border-border/50 flex-shrink-0">
+                      <h2 className="text-2xl font-bold text-primary mb-2">
+                        {selectedProjectData.title}
+                      </h2>
+                      <p className="text-muted-foreground mb-4">
+                        {selectedProjectData.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedProjectData.technologies.map((tech) => (
+                          <Badge key={tech} variant="outline" className="text-xs">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* File Content or Project Overview */}
-                  <div className="flex-1 p-6 min-h-0">
+                  <div className="flex-1 p-0 min-h-0">
                     {selectedFile ? (
-                      // Only show code content with syntax highlighting, no header, no badges, no github button
+                      // Only show code content with syntax highlighting and code language label directly above code (like image 2)
                       <div className="bg-muted/20 rounded-lg border border-border/50 h-full overflow-hidden">
                         <div className="h-full overflow-y-auto p-0 file-content-scroll">
+                          {/* Code language label directly above code block, left-aligned */}
+                          <div className="px-6 pt-4 pb-0">
+                            <span className="inline-block text-xs font-mono text-muted-foreground mb-1">
+                              {(() => {
+                                const type = selectedProjectData.files.find(f => f.name === selectedFile)?.type;
+                                switch (type) {
+                                  case "sql": return "SQL";
+                                  case "python": return "Python";
+                                  case "markdown": return "Markdown";
+                                  default: return type?.charAt(0).toUpperCase() + type?.slice(1) || "Code";
+                                }
+                              })()}
+                            </span>
+                          </div>
                           {/* Syntax highlighting based on file type */}
-                          <pre className={`text-sm whitespace-pre-wrap break-words file-content language-${selectedProjectData.files.find(f => f.name === selectedFile)?.type}`}>
+                          <pre className={`text-sm whitespace-pre-wrap break-words file-content px-6 pb-6 language-${selectedProjectData.files.find(f => f.name === selectedFile)?.type}`}>
                             <code className="block">
                               {fileContent}
                             </code>
@@ -395,7 +411,7 @@ export function ProjectsSection() {
                       </div>
                     ) : (
                       // Folder/project overview: keep all info as before
-                      <div className="space-y-6">
+                      <div className="space-y-6 p-6">
                         <div className="relative h-48 rounded-lg overflow-hidden">
                           <img
                             src={selectedProjectData.image}
