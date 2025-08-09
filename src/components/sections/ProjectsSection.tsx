@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Database, Code, BarChart3, ChevronDown, ChevronRight, FileText, FileCode } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getProjectFile } from "@/lib/projectFiles";
+import { CodeViewer } from "@/components/CodeViewer";
 
 const projectCategories = [
   {
@@ -297,7 +298,6 @@ export function ProjectsSection() {
             >
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-primary mb-2">{currentCategory.title}</h3>
-                <p className="text-sm text-muted-foreground">{currentCategory.description}</p>
               </div>
               
               <div className="space-y-1">
@@ -362,53 +362,34 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header */}
-                  <div className="p-6 border-b border-border/50 flex-shrink-0">
-                    <h2 className="text-2xl font-bold text-primary mb-2">
-                      {selectedProjectData.title}
-                    </h2>
-                    <p className="text-muted-foreground mb-4">
-                      {selectedProjectData.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProjectData.technologies.map((tech) => (
-                        <Badge key={tech} variant="outline" className="text-xs">
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* File Content or Project Overview */}
-                  <div className="flex-1 p-6 min-h-0">
+                  <div className="flex-1 min-h-0">
                     {selectedFile ? (
-                      <div className="space-y-4 h-full flex flex-col">
-                        <div className="flex items-center justify-between flex-shrink-0">
-                          <h3 className="text-lg font-semibold">{selectedFile}</h3>
-                          <div className="flex gap-2">
-                            <Button asChild variant="outline" size="sm">
-                              <a
-                                href={selectedProjectData.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Github className="mr-2 h-4 w-4" />
-                                View on GitHub
-                              </a>
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="bg-muted/20 rounded-lg border border-border/50 flex-1 overflow-hidden">
-                          <div className="h-full overflow-y-auto p-4 file-content-scroll">
-                            <pre className="text-sm text-muted-foreground whitespace-pre-wrap break-words file-content">
-                              <code className="block">{fileContent}</code>
-                            </pre>
-                          </div>
-                        </div>
+                      <div className="h-full bg-muted/20 rounded-lg border border-border/50 overflow-hidden">
+                        <CodeViewer 
+                          content={fileContent} 
+                          language={selectedProjectData.files.find(f => f.name === selectedFile)?.type || 'text'} 
+                        />
                       </div>
                     ) : (
-                      <div className="space-y-6">
-                        <div className="relative h-48 rounded-lg overflow-hidden">
+                      <div className="p-6 space-y-6">
+                        {/* Project Header */}
+                        <div>
+                          <h2 className="text-2xl font-bold text-primary mb-2">
+                            {selectedProjectData.title}
+                          </h2>
+                          <p className="text-muted-foreground mb-4">
+                            {selectedProjectData.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedProjectData.technologies.map((tech) => (
+                              <Badge key={tech} variant="outline" className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
                           <img
                             src={selectedProjectData.image}
                             alt={selectedProjectData.title}
