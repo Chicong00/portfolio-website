@@ -382,31 +382,19 @@ export function ProjectsSection() {
                   {/* File Content or Project Overview */}
                   <div className="flex-1 p-6 min-h-0">
                     {selectedFile ? (
-                      <div className="space-y-4 h-full flex flex-col">
-                        <div className="flex items-center justify-between flex-shrink-0">
-                          <h3 className="text-lg font-semibold">{selectedFile}</h3>
-                          <div className="flex gap-2">
-                            <Button asChild variant="outline" size="sm">
-                              <a
-                                href={selectedProjectData.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Github className="mr-2 h-4 w-4" />
-                                View on GitHub
-                              </a>
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="bg-muted/20 rounded-lg border border-border/50 flex-1 overflow-hidden">
-                          <div className="h-full overflow-y-auto p-4 file-content-scroll">
-                            <pre className="text-sm text-muted-foreground whitespace-pre-wrap break-words file-content">
-                              <code className="block">{fileContent}</code>
-                            </pre>
-                          </div>
+                      // Only show code content with syntax highlighting, no header, no badges, no github button
+                      <div className="bg-muted/20 rounded-lg border border-border/50 h-full overflow-hidden">
+                        <div className="h-full overflow-y-auto p-0 file-content-scroll">
+                          {/* Syntax highlighting based on file type */}
+                          <pre className={`text-sm whitespace-pre-wrap break-words file-content language-${selectedProjectData.files.find(f => f.name === selectedFile)?.type}`}>
+                            <code className="block">
+                              {fileContent}
+                            </code>
+                          </pre>
                         </div>
                       </div>
                     ) : (
+                      // Folder/project overview: keep all info as before
                       <div className="space-y-6">
                         <div className="relative h-48 rounded-lg overflow-hidden">
                           <img
