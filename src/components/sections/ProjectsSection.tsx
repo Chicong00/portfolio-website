@@ -386,30 +386,21 @@ export function ProjectsSection() {
                   <div className="flex-1 p-0 min-h-0">
                     {selectedFile ? (
                       // Only show code content with syntax highlighting and code language label directly above code (like image 2)
-                      <div className="bg-muted/20 rounded-lg border border-border/50 h-full overflow-hidden">
-                        <div className="h-full overflow-y-auto p-0 file-content-scroll">
-                          {/* Code language label directly above code block, left-aligned */}
-                          <div className="px-6 pt-4 pb-0">
-                            <span className="inline-block text-xs font-mono text-muted-foreground mb-1">
-                              {(() => {
-                                const type = selectedProjectData.files.find(f => f.name === selectedFile)?.type;
-                                switch (type) {
-                                  case "sql": return "SQL";
-                                  case "python": return "Python";
-                                  case "markdown": return "Markdown";
-                                  default: return type?.charAt(0).toUpperCase() + type?.slice(1) || "Code";
-                                }
-                              })()}
-                            </span>
-                          </div>
-                          {/* Syntax highlighting based on file type */}
-                          <pre className={`text-sm whitespace-pre-wrap break-words file-content px-6 pb-6 language-${selectedProjectData.files.find(f => f.name === selectedFile)?.type}`}>
-                            <code className="block">
-                              {fileContent}
-                            </code>
-                          </pre>
-                        </div>
-                      </div>
+<div className="bg-muted/20 rounded-lg border border-border/50 h-full overflow-hidden">
+  {/* Prism-based code viewer with fixed layout */}
+  <div className="h-full">
+    {(() => {
+      const file = selectedProjectData.files.find(f => f.name === selectedFile);
+      return (
+        <CodeViewer
+          content={fileContent}
+          filename={file?.name}
+          language={file?.type}
+        />
+      );
+    })()}
+  </div>
+</div>
                     ) : (
                       // Folder/project overview: keep all info as before
                       <div className="space-y-6 p-6">
