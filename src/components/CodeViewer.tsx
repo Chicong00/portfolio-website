@@ -55,7 +55,7 @@ export function CodeViewer({ content, filename, language }: CodeViewerProps) {
   };
 
   return (
-    <div className="code-viewer-container h-full w-full overflow-hidden flex flex-col">
+    <div className="code-viewer-container h-full w-full overflow-hidden flex flex-col min-h-0">
       <div className="flex items-center justify-between px-6 pt-4 pb-2">
         <span className="inline-block text-xs font-mono text-muted-foreground">
           {lang.toUpperCase()}
@@ -68,10 +68,10 @@ export function CodeViewer({ content, filename, language }: CodeViewerProps) {
           Copy
         </button>
       </div>
-      <div className="flex-1 overflow-auto">
-        <pre className={`language-${lang} line-numbers m-0 p-0 bg-transparent`}>
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <pre className={`language-${lang} line-numbers m-0 p-0 bg-transparent h-full max-h-full overflow-y-scroll overflow-x-hidden`}>
           <code
-            className={`language-${lang} block p-6 text-sm leading-relaxed`}
+            className={`language-${lang} block p-6 text-sm leading-relaxed whitespace-pre-wrap break-words`}
             dangerouslySetInnerHTML={{ __html: highlightedCode }}
           />
         </pre>
