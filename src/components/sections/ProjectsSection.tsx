@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Database, Code, BarChart3, ChevronDown, ChevronRight, FileText, FileCode } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getProjectFile } from "@/lib/projectFiles";
-import { CodeViewer } from "@/components/CodeViewer";
 
 const projectCategories = [
   {
@@ -363,56 +362,52 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header - ONLY for folder, not file */}
-                  {!selectedFile && (
-                    <div className="p-6 border-b border-border/50 flex-shrink-0">
-                      <h2 className="text-2xl font-bold text-primary mb-2">
-                        {selectedProjectData.title}
-                      </h2>
-                      <p className="text-muted-foreground mb-4">
-                        {selectedProjectData.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProjectData.technologies.map((tech) => (
-                          <Badge key={tech} variant="outline" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
+                  {/* Project Header */}
+                  <div className="p-6 border-b border-border/50 flex-shrink-0">
+                    <h2 className="text-2xl font-bold text-primary mb-2">
+                      {selectedProjectData.title}
+                    </h2>
+                    <p className="text-muted-foreground mb-4">
+                      {selectedProjectData.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProjectData.technologies.map((tech) => (
+                        <Badge key={tech} variant="outline" className="text-xs">
+                          {tech}
+                        </Badge>
+                      ))}
                     </div>
-                  )}
+                  </div>
 
                   {/* File Content or Project Overview */}
-                  <div className="flex-1 p-0 min-h-0">
+                  <div className="flex-1 p-6 min-h-0">
                     {selectedFile ? (
-                      // Only show code content with syntax highlighting and code language label directly above code (like image 2)
-                      <div className="bg-muted/20 rounded-lg border border-border/50 h-full overflow-hidden">
-                        <div className="h-full overflow-y-auto p-0 file-content-scroll">
-                          {/* Code language label directly above code block, left-aligned */}
-                          <div className="px-6 pt-4 pb-0">
-                            <span className="inline-block text-xs font-mono text-muted-foreground mb-1">
-                              {(() => {
-                                const type = selectedProjectData.files.find(f => f.name === selectedFile)?.type;
-                                switch (type) {
-                                  case "sql": return "SQL";
-                                  case "python": return "Python";
-                                  case "markdown": return "Markdown";
-                                  default: return type?.charAt(0).toUpperCase() + type?.slice(1) || "Code";
-                                }
-                              })()}
-                            </span>
+                      <div className="space-y-4 h-full flex flex-col">
+                        <div className="flex items-center justify-between flex-shrink-0">
+                          <h3 className="text-lg font-semibold">{selectedFile}</h3>
+                          <div className="flex gap-2">
+                            <Button asChild variant="outline" size="sm">
+                              <a
+                                href={selectedProjectData.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Github className="mr-2 h-4 w-4" />
+                                View on GitHub
+                              </a>
+                            </Button>
                           </div>
-                          {/* Syntax highlighting based on file type */}
-                          <pre className={`text-sm whitespace-pre-wrap break-words file-content px-6 pb-6 language-${selectedProjectData.files.find(f => f.name === selectedFile)?.type}`}>
-                            <code className="block">
-                              {fileContent}
-                            </code>
-                          </pre>
+                        </div>
+                        <div className="bg-muted/20 rounded-lg border border-border/50 flex-1 overflow-hidden">
+                          <div className="h-full overflow-y-auto p-4 file-content-scroll">
+                            <pre className="text-sm text-muted-foreground whitespace-pre-wrap break-words file-content">
+                              <code className="block">{fileContent}</code>
+                            </pre>
+                          </div>
                         </div>
                       </div>
                     ) : (
-                      // Folder/project overview: keep all info as before
-                      <div className="space-y-6 p-6">
+                      <div className="space-y-6">
                         <div className="relative h-48 rounded-lg overflow-hidden">
                           <img
                             src={selectedProjectData.image}
