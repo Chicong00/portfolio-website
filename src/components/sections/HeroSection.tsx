@@ -1,131 +1,145 @@
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Download, ArrowDown } from "lucide-react";
-import { AnimatedRobot } from "@/components/AnimatedRobot";
+"use client";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import SplitType from "split-type";
+import { ArrowDown } from "lucide-react";
+import "@/flowfest-text.css";
 
 export function HeroSection() {
+  const line1Ref = useRef<HTMLHeadingElement>(null);
+  const line2Ref = useRef<HTMLParagraphElement>(null);
+  const line3Ref = useRef<HTMLParagraphElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Background: gradient shifting + particle
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles: { x: number; y: number; r: number; dx: number; dy: number; color: string }[] = [];
+    const colors = ["#3B5E51", "#F4D1A6"];
+
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  }, []);
+
+  // Text animations
+  useEffect(() => {
+    // Line 1 sequence
+    const tl1 = gsap.timeline();
+    tl1.set(line1Ref.current, { textContent: "Hi there!" })
+      .to(line1Ref.current, { textContent: "I'm Cong", duration: 0.6, ease: "power2.inOut", delay: 0.4 })
+      .to(line1Ref.current, { textContent: "Hi there! I'm Cong", duration: 0.8, ease: "power2.inOut", delay: 0.3 });
+
+    // Line 2 bounce words
+    const split2 = new SplitType(line2Ref.current!, { types: "words" });
+    gsap.from(split2.words, {
+      opacity: 0,
+      y: 50,
+      scale: 0.5,
+      rotation: -5,
+      ease: "elastic.out(1, 0.4)",
+      stagger: 0.07,
+      duration: 1.2,
+      delay: 2
+    });
+
+    // Line 3 fade tagline
+    gsap.from(line3Ref.current, {
+      opacity: 0,
+      scale: 0.9,
+      y: 20,
+      duration: 1,
+      ease: "power3.out",
+      delay: 3
+    });
+  }, []);
+
   return (
-    <section className="min-h-screen flex items-center justify-center hero-gradient relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: "-3s" }}></div>
-      </div>
+    <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a] via-[#1a2a23] to-[#0f172a] animate-gradient-shift"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-center lg:text-left"
-          >
-            <motion.h1 
-              className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Hi there! I'm{" "}
-              <span className="gradient-text">Cong</span>
-              <span className="text-primary">.</span>
-            </motion.h1>
+      {/* Particle Layer */}
+      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-8"
-            >
-              <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-                I'm a <span className="text-primary font-semibold">Data Analyst & Engineer</span>
-              </p>
-              <p className="text-xl md:text-2xl text-muted-foreground">
-                let me cook data into insights.
-              </p>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-lg text-muted-foreground mb-8 max-w-2xl text-balance"
-            >
-              I'm a problem solver at heart who loves discovering patterns in data, 
-              building automated solutions, and creating visualizations that tell 
-              compelling stories. Whether it's optimizing processes, predicting trends, 
-              or uncovering hidden insights, I enjoy crafting data-driven solutions 
-              that make a real impact.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <Button size="lg" className="group transition-bounce hover:scale-105">
-                <Download className="mr-2 h-5 w-5 group-hover:animate-bounce" />
-                View Resume
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                onClick={scrollToAbout}
-                className="transition-bounce hover:scale-105"
-              >
-                Learn More
-              </Button>
-            </motion.div>
-          </motion.div>
-
-          {/* Animated Robot */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative"
-          >
-            <div className="relative z-10">
-              <AnimatedRobot />
-            </div>
-            
-            {/* Floating Elements */}
-            <motion.div
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-8 -right-8 w-16 h-16 bg-primary/20 rounded-full blur-xl"
-            ></motion.div>
-            <motion.div
-              animate={{ y: [10, -10, 10] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-8 -left-8 w-24 h-24 bg-primary/15 rounded-full blur-xl"
-            ></motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="cursor-pointer"
-          onClick={scrollToAbout}
+      {/* Text */}
+      <div className="relative z-10 px-4">
+        <h1
+          ref={line1Ref}
+          className="flowfest-text text-5xl md:text-6xl lg:text-7xl mb-4"
         >
-          <ArrowDown className="h-6 w-6 text-muted-foreground hover:text-primary transition-smooth" />
-        </motion.div>
-      </motion.div>
+          <span style={{ color: "#F4D1A6" }}>Hi there!</span>{" "}
+          <span style={{ color: "#3B5E51" }}>I'm Cong</span>
+        </h1>
+        <p
+          ref={line2Ref}
+          className="flowfest-text text-2xl md:text-3xl mb-4"
+        >
+          <span style={{ color: "#F4D1A6" }}>I'm a</span>{" "}
+          <span style={{ color: "#3B5E51" }}>Data Analyst & Engineer</span>
+        </p>
+        <p
+          ref={line3Ref}
+          className="flowfest-text text-xl md:text-2xl"
+        >
+          <span style={{ color: "#F4D1A6" }}>Let me cook data into</span>{" "}
+          <span style={{ color: "#3B5E51" }}>insights</span>.
+        </p>
+      </div>
+
+      {/* Scroll Arrow */}
+      <div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce z-10"
+        onClick={scrollToAbout}
+      >
+        <ArrowDown className="h-6 w-6 text-[#F4D1A6] hover:text-[#3B5E51] transition-colors" />
+      </div>
+
+      <style jsx global>{`
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-shift {
+          background-size: 200% 200%;
+          animation: gradient-shift 12s ease infinite;
+        }
+      `}</style>
     </section>
   );
 }
