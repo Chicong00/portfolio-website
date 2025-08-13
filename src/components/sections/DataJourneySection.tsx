@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Briefcase, Award, TrendingUp } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 const journeyItems = [
   {
@@ -31,28 +32,72 @@ export function DataJourneySection() {
     triggerOnce: true,
     threshold: 0.1,
   });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let particles: { x: number; y: number; r: number; dx: number; dy: number; color: string }[] = [];
+    const colors = ["#3B5E51", "#F4D1A6"];
+
+    const resizeCanvas = () => {
+        canvas.width = parent.offsetWidth;
+        canvas.height = parent.offsetHeight;
+        particles = [];
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 2 + 1,
+                dx: (Math.random() - 0.5) * 0.4,
+                dy: (Math.random() - 0.5) * 0.4,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            });
+        }
+    };
+
+    let animationFrameId: number;
+    const animateParticles = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      animationFrameId = window.requestAnimationFrame(animateParticles);
+    };
+
+    resizeCanvas();
+    animateParticles();
+    
+    window.addEventListener('resize', resizeCanvas);
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      window.cancelAnimationFrame(animationFrameId);
+    }
+  }, []);
 
   return (
     <section id="data-journey" className="py-20 relative" ref={ref}>
-      {/* Organic Background */}
-      <div className="absolute inset-0 organic-bg">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="flowing-shapes" />
-        ))}
-        <div 
-          className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/5 blur-3xl animate-float" 
-          style={{ 
-            borderRadius: "60% 40% 70% 30% / 50% 60% 40% 50%",
-          }}
-        ></div>
-        <div 
-          className="absolute bottom-1/3 right-1/3 w-48 h-48 bg-accent/8 blur-2xl animate-float" 
-          style={{ 
-            borderRadius: "40% 60% 30% 70% / 60% 30% 70% 40%",
-            animationDelay: "-2s" 
-          }}
-        ></div>
-      </div>
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a] via-[#1a2a23] to-[#0f172a] animate-gradient-shift"></div>
+      {/* Particle Layer */}
+      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -113,6 +158,17 @@ export function DataJourneySection() {
           </div>
         </div>
       </div>
+      <style jsx global>{`
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-shift {
+          background-size: 200% 200%;
+          animation: gradient-shift 12s ease infinite;
+        }
+      `}</style>
     </section>
   );
 }
