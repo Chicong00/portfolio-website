@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import SplitType from "split-type";
 import { ArrowDown } from "lucide-react";
 import "@/flowfest-text.css";
+
+gsap.registerPlugin(ScrambleTextPlugin);
 
 export function HeroSection() {
   const line1Ref = useRef<HTMLHeadingElement>(null);
@@ -60,9 +63,9 @@ export function HeroSection() {
   useEffect(() => {
     // Line 1 sequence
     const tl1 = gsap.timeline();
-    tl1.set(line1Ref.current, { textContent: "Hi there!" })
-      .to(line1Ref.current, { textContent: "I'm Cong", duration: 0.6, ease: "power2.inOut", delay: 0.4 })
-      .to(line1Ref.current, { textContent: "Hi there! I'm Cong", duration: 0.8, ease: "power2.inOut", delay: 0.3 });
+    tl1.set(line1Ref.current, { innerHTML: "Hi there!" })
+      .to(line1Ref.current, { innerHTML: "I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.6, ease: "power2.inOut", delay: 0.4 })
+      .to(line1Ref.current, { innerHTML: "Hi there! I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.8, ease: "power2.inOut", delay: 0.3 });
 
     // Line 2 bounce words
     const split2 = new SplitType(line2Ref.current!, { types: "words" });
@@ -77,15 +80,32 @@ export function HeroSection() {
       delay: 2
     });
 
-    // Line 3 fade tagline
-    gsap.from(line3Ref.current, {
-      opacity: 0,
-      scale: 0.9,
-      y: 20,
-      duration: 1,
-      ease: "power3.out",
-      delay: 3
-    });
+    // Line 3 scramble text animation
+    if (line3Ref.current) {
+      // 1. Lưu lại nội dung HTML cuối cùng với màu sắc
+      const finalHTML = line3Ref.current.innerHTML;
+
+      // 2. Xóa nội dung ban đầu để không bị lộ trước khi animation bắt đầu
+      line3Ref.current.innerHTML = '&nbsp;'; // Dùng non-breaking space để giữ chiều cao
+
+      // 3. Chạy animation
+      gsap.to(line3Ref.current, {
+        duration: 2,
+        scrambleText: {
+          text: "Let me cook data into insights.", // Nội dung text đầy đủ để scramble
+          chars: "lowerCase",
+          revealDelay: 0.5,
+          tweenLength: false
+        },
+        // 4. Sau khi scramble xong, phục hồi lại HTML có màu
+        onComplete: () => {
+          if (line3Ref.current) {
+            line3Ref.current.innerHTML = finalHTML;
+          }
+        },
+        delay: 3 // Bắt đầu animation sau 3 giây
+      });
+    }
   }, []);
 
   return (
@@ -102,8 +122,7 @@ export function HeroSection() {
           ref={line1Ref}
           className="flowfest-text text-5xl md:text-6xl lg:text-7xl mb-4"
         >
-          <span style={{ color: "#F4D1A6" }}>Hi there!</span>{" "}
-          <span style={{ color: "#3B5E51" }}>I'm Cong</span>
+          {/* Nội dung ban đầu không đổi */}
         </h1>
         <p
           ref={line2Ref}
@@ -116,6 +135,7 @@ export function HeroSection() {
           ref={line3Ref}
           className="flowfest-text text-xl md:text-2xl"
         >
+          {/* Nội dung này sẽ được quản lý bởi GSAP */}
           <span style={{ color: "#F4D1A6" }}>Let me cook data into</span>{" "}
           <span style={{ color: "#3B5E51" }}>insights</span>.
         </p>
