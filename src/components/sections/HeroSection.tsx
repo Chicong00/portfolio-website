@@ -61,11 +61,80 @@ export function HeroSection() {
 
   // Text animations
   useEffect(() => {
-    // Line 1 sequence
-    const tl1 = gsap.timeline();
-    tl1.set(line1Ref.current, { innerHTML: "Hi there!", duration: 0.4, delay: 0.2 })
-      .to(line1Ref.current, { innerHTML: "I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.6, ease: "power2.inOut", delay: 0.4 })
-      .to(line1Ref.current, { innerHTML: "Hi there! I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.8, ease: "power2.inOut", delay: 0.3 });
+  // === LINE 1: typing + cursor blink ===
+  if (line1Ref.current && line2Ref.current && line3Ref.current) {
+    const l1 = line1Ref.current;
+    const l2 = line2Ref.current;
+    const l3 = line3Ref.current;
+
+  // Hide line 2, 3 until line 1 finished typing
+  gsap.set([l2, l3], { autoAlpha: 0 });
+
+  // CSS cho cursor blink
+  if (!document.getElementById("typing-cursor-style")) {
+    const style = document.createElement("style");
+    style.id = "typing-cursor-style";
+    style.textContent = `
+      @keyframes blinkCursor { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+      .typing-cursor{ display:inline-block; margin-left:2px; animation:blinkCursor .9s step-end infinite; color:#F4D1A6; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Cursor element
+  const cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  cursor.textContent = "🛸";
+  const addCursor = () => { if (!cursor.parentNode) l1.appendChild(cursor); };
+  const removeCursor = () => { if (cursor.parentNode) cursor.remove(); };
+
+  const wait = (s: number) => new Promise<void>((r) => gsap.delayedCall(s, r));
+
+  // Typing each character (do not remove the text before)
+  const typeAppend = (html: string, speed = 55) =>
+    new Promise<void>((resolve) => {
+      addCursor();
+      let i = 0;
+      const src = html;
+      const step = () => {
+        if (i >= src.length) {
+          resolve();
+          return;
+        }
+        if (src[i] === "<") {
+          const j = src.indexOf(">", i);
+          const tag = src.slice(i, j + 1);
+          cursor.insertAdjacentHTML("beforebegin", tag);
+          i = j + 1;
+          requestAnimationFrame(step);
+          return;
+        }
+        cursor.insertAdjacentText("beforebegin", src[i]);
+        i++;
+        setTimeout(step, speed);
+      };
+      step();
+    });
+
+  (async () => {
+    // Phase 1: Hi there!
+    l1.innerHTML = "";
+    await typeAppend("Hi there!", 55);
+    await wait(0.2);
+
+    // Phase 2:" I'm Cong"
+    await typeAppend(` I'm <span style="color:#3B5E51">Cong</span>`, 55);
+    await wait(0.2);
+
+    // Phase 3: remove cursor after typing full line
+    removeCursor();
+
+    // allow line 2 & 3 appear
+    gsap.set([l2, l3], { autoAlpha: 1 });
+  })();
+}
+
+// === END LINE 1 block ===
 
     // Line 2 bounce words
     const split2 = new SplitType(line2Ref.current!, { types: "words" });
@@ -76,34 +145,34 @@ export function HeroSection() {
       rotation: -5,
       ease: "elastic.out(1, 0.4)",
       stagger: 0.07,
-      duration: 1.2,
+      duration: 2.2,
       delay: 2
     });
 
     // Line 3 scramble text animation
     if (line3Ref.current) {
-      // 1. Lưu lại nội dung HTML cuối cùng với màu sắc
+      // 1. Keep the final HTML with colors for later
       const finalHTML = line3Ref.current.innerHTML;
 
-      // 2. Xóa nội dung ban đầu để không bị lộ trước khi animation bắt đầu
-      line3Ref.current.innerHTML = '&nbsp;'; // Dùng non-breaking space để giữ chiều cao
+      // 2. Remove inital content for hidden purpose when animation starts
+      line3Ref.current.innerHTML = '&nbsp;'; // Use non-breaking space to keep the height
 
-      // 3. Chạy animation
+      // 3. Run animation
       gsap.to(line3Ref.current, {
         duration: 2,
         scrambleText: {
-          text: "Let me cook data into insights.", // Nội dung text đầy đủ để scramble
+          text: "Let me cook data into insights", 
           chars: "lowerCase",
           revealDelay: 0.5,
           tweenLength: false
         },
-        // 4. Sau khi scramble xong, phục hồi lại HTML có màu
+        // 4. After scramble fnished, recover the final HTML with colors
         onComplete: () => {
           if (line3Ref.current) {
             line3Ref.current.innerHTML = finalHTML;
           }
         },
-        delay: 3 // Bắt đầu animation sau 3 giây
+        delay: 3 // Start animation after 3 seconds
       });
     }
   }, []);
@@ -122,7 +191,6 @@ export function HeroSection() {
           ref={line1Ref}
           className="flowfest-text text-5xl md:text-6xl lg:text-7xl mb-4"
         >
-          {/* Nội dung ban đầu không đổi */}
         </h1>
         <p
           ref={line2Ref}
@@ -135,9 +203,8 @@ export function HeroSection() {
           ref={line3Ref}
           className="flowfest-text text-xl md:text-2xl"
         >
-          {/* Nội dung này sẽ được quản lý bởi GSAP */}
           <span style={{ color: "#F4D1A6" }}>Let me cook data into</span>{" "}
-          <span style={{ color: "#3B5E51" }}>insights</span>.
+          <span style={{ color: "#3B5E51" }}>insights</span>
         </p>
       </div>
 
