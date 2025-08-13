@@ -521,9 +521,6 @@ export function ProjectsSection() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="text-center mt-12"
         >
-          <Button variant="outline" size="lg" className="transition-bounce hover:scale-105">
-            View All Projects
-          </Button>
         </motion.div>
       </div>
       <style jsx global>{`
