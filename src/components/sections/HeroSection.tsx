@@ -63,7 +63,7 @@ export function HeroSection() {
   useEffect(() => {
     // Line 1 sequence
     const tl1 = gsap.timeline();
-    tl1.set(line1Ref.current, { innerHTML: "Hi there!" })
+    tl1.set(line1Ref.current, { innerHTML: "Hi there!", duration: 0.4, delay: 0.2 })
       .to(line1Ref.current, { innerHTML: "I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.6, ease: "power2.inOut", delay: 0.4 })
       .to(line1Ref.current, { innerHTML: "Hi there! I'm <span style='color:#3B5E51'>Cong</span>", duration: 0.8, ease: "power2.inOut", delay: 0.3 });
 
