@@ -16,18 +16,18 @@ const projectCategories = [
     description: "Data analysis and database management projects using SQL",
     projects: [
       {
-        id: "cyclistic",
-        title: "Cyclistic Bike Share Analysis",
-        description: "Cyclistic is a fictional bike-share company in Chicago. The goal of this project is to analyze the bike usage data to understand how different types of users (casual vs. annual members) use the service and to provide insights for marketing strategies.",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=300&fit=crop",
-        technologies: ["MySQL", "Excel", "Tableau", "Data Visualization", "Data Analysis"],
-        githubUrl: "https://github.com/Chicong00/cyclistic-bike-share-analysis",
-        liveUrl: "https://medium.com/@your-username/cyclistic-bike-share-analysis",
+        id: "week1",
+        title: "8 week sql challenge - Danny's Diner",
+        description: "Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite.",
+        image: "/images/8wsql-week1.png",
+        technologies: ["Data Analysis", "Aggregate Functions", "Window Functions", "Common Table Expression", "Sub Query"],
+        githubUrl: "https://github.com/Chicong00/8-week-SQL-challenge/tree/main/Case%20Study%20%231%20-%20Danny's%20Diner",
+        liveUrl: "https://congvocom.wordpress.com/project/project-2/",
         files: [
-          { name: "README.md", type: "markdown", path: "sql/cyclistic/README.md" },
-          { name: "cleaning.sql", type: "sql", path: "sql/cyclistic/cleaning.sql" },
-          { name: "querying.sql", type: "sql", path: "sql/cyclistic/querying.sql" },
-          { name: "viz_query.sql", type: "sql", path: "sql/cyclistic/viz_query.sql" }
+          { name: "README.md", type: "markdown", path: "sql/week1/README.md" },
+          { name: "schema.sql", type: "sql", path: "sql/week1/schema.sql" },
+          { name: "querying.sql", type: "sql", path: "sql/week1/querying.sql" },
+          { name: "SOLUTION.md", type: "markdown", path: "sql/week1/SOLUTION.md" }
         ]
       },
       {
@@ -61,7 +61,7 @@ const projectCategories = [
   {
     id: "python",
     title: "Python Projects",
-    icon: Code,
+    icon: Code, 
     description: "Data analysis and automation projects using Python",
     projects: [
       {
@@ -158,8 +158,8 @@ export function ProjectsSection() {
     threshold: 0.1,
   });
   const [activeCategory, setActiveCategory] = useState("sql");
-  const [selectedProject, setSelectedProject] = useState("cyclistic");
-  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set(["cyclistic"]));
+  const [selectedProject, setSelectedProject] = useState("week1");
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set(["week1"]));
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement>(null);

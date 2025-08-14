@@ -4,10 +4,10 @@
 // Import all project files
 const projectFiles = {
   // SQL Projects
-  'sql/cyclistic/README.md': () => import('@/assets/projects/sql/cyclistic/README.md?raw'),
-  'sql/cyclistic/cleaning.sql': () => import('@/assets/projects/sql/cyclistic/cleaning.sql?raw'),
-  'sql/cyclistic/querying.sql': () => import('@/assets/projects/sql/cyclistic/querying.sql?raw'),
-  'sql/cyclistic/viz_query.sql': () => import('@/assets/projects/sql/cyclistic/viz_query.sql?raw'),
+  'sql/week1/README.md': () => import('@/assets/projects/sql/week1/README.md?raw'),
+  'sql/week1/schema.sql': () => import('@/assets/projects/sql/week1/schema.sql?raw'),
+  'sql/week1/querying.sql': () => import('@/assets/projects/sql/week1/querying.sql?raw'),
+  'sql/week1/SOLUTION.md': () => import('@/assets/projects/sql/week1/SOLUTION.md?raw'),
   
   'sql/nashville/README.md': () => import('@/assets/projects/sql/nashville/README.md?raw'),
   'sql/nashville/nashville.sql': () => import('@/assets/projects/sql/nashville/nashville.sql?raw'),
