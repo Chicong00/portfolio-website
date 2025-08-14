@@ -28,10 +28,10 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-muted-foreground">
-              © Data Analyst Portfolio. Built with React, TypeScript, and Tailwind CSS.
+              © 2025 Cong Vo. All rights reserved.
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Turning data into insights, one analysis at a time.
+              Turning data into insights.
             </p>
           </div>
         </div>
