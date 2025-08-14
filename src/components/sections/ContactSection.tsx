@@ -164,7 +164,7 @@ export function ContactSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:col-span-1"
           >
-            <Card className="card-elegant h-fit">
+            <Card className="card-elegant h-full">
               <CardHeader>
                 <CardTitle className="text-xl text-primary">Get in Touch</CardTitle>
                 <p className="text-muted-foreground">
@@ -224,11 +224,11 @@ export function ContactSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="lg:col-span-2"
           >
-            <Card className="card-elegant">
+            <Card className="card-elegant h-full">
               <CardHeader>
                 <CardTitle className="text-xl text-primary">Send a Message</CardTitle>
                 <p className="text-muted-foreground">
-                Feel free to contact me to collaborate on data and AI projects.
+                Let's build something cool.
                 </p>
               </CardHeader>
               <CardContent>
@@ -241,7 +241,7 @@ export function ContactSection() {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="John Doe"
+                        placeholder="Your name"
                         required
                         className="transition-smooth focus:ring-2 focus:ring-primary"
                       />
@@ -254,7 +254,7 @@ export function ContactSection() {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="john@example.com"
+                        placeholder="your@email.com"
                         required
                         className="transition-smooth focus:ring-2 focus:ring-primary"
                       />
@@ -268,7 +268,7 @@ export function ContactSection() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="Data Analysis Project Inquiry"
+                      placeholder="Email subject"
                       required
                       className="transition-smooth focus:ring-2 focus:ring-primary"
                     />
@@ -281,7 +281,7 @@ export function ContactSection() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell me about your ideas or projects, I will response as soon as possible."
+                      placeholder="Your message..."
                       rows={6}
                       required
                       className="transition-smooth focus:ring-2 focus:ring-primary resize-none"
@@ -300,20 +300,6 @@ export function ContactSection() {
             </Card>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center mt-12"
-        >
-          <p className="text-muted-foreground">
-            Prefer a quick chat? Schedule a 15-minute call to discuss your data needs.
-          </p>
-          <Button variant="outline" size="lg" className="mt-4 transition-bounce hover:scale-105">
-            Schedule a Call
-          </Button>
-        </motion.div>
       </div>
       <style jsx global>{`
         @keyframes gradient-shift {
