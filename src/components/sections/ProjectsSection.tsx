@@ -438,25 +438,28 @@ export function ProjectsSection() {
                     ) : (
                       // Folder/project overview: full background image with overlaid content
                       <div className="relative h-full w-full overflow-hidden">
-                        {/* Full background image */}
+                        {/* Full background image with proper scaling */}
                         <img
                           src={selectedProjectData.image}
                           alt={selectedProjectData.title}
-                          className="w-full h-full object-cover object-center"
+                          className="w-full h-full object-contain bg-gradient-to-br from-gray-900/50 to-gray-800/50"
                         />
                         
-                        {/* Dark overlay at bottom for better text readability */}
-                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                        {/* Stronger dark overlay for content area */}
+                        <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/90 via-black/70 to-black/30"></div>
+                        
+                        {/* Additional overlay for better text contrast */}
+                        <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
                         
                         {/* Overlay content on bottom half of image, left-aligned */}
                         <div className="absolute inset-0 flex flex-col justify-end items-start p-6">
                           {/* Project title */}
-                          <h2 className="text-2xl md:text-3xl font-bold text-[#3B5E51] mb-3 z-10 drop-shadow-lg">
+                          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 z-10 drop-shadow-2xl">
                             {selectedProjectData.title}
                           </h2>
                           
                           {/* Project description */}
-                          <p className="text-base text-[#F4D1A6] mb-4 max-w-[90%] z-10 drop-shadow-lg leading-relaxed">
+                          <p className="text-base text-[#F4D1A6] mb-4 max-w-[90%] z-10 drop-shadow-2xl leading-relaxed font-medium">
                             {selectedProjectData.description}
                           </p>
                           
@@ -466,7 +469,7 @@ export function ProjectsSection() {
                               <Badge 
                                 key={tech} 
                                 variant="outline" 
-                                className="text-xs border-[#3B5E51]/50 text-[#3B5E51] bg-background/30 backdrop-blur-sm"
+                                className="text-xs border-white/60 text-white bg-black/40 backdrop-blur-sm font-medium"
                               >
                                 {tech}
                               </Badge>
@@ -483,7 +486,7 @@ export function ProjectsSection() {
                             rel="noopener noreferrer"
                             className="p-2 hover:scale-110 transition-transform duration-300 group"
                           >
-                            <Github className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-lg" />
+                            <Github className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
                           </a>
                           
                           {/* Live Demo Icon */}
@@ -497,7 +500,7 @@ export function ProjectsSection() {
                                 : "opacity-50 cursor-not-allowed"
                             }`}
                           >
-                            <ExternalLink className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-lg" />
+                            <ExternalLink className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
                           </a>
                         </div>
                       </div>
