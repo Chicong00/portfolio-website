@@ -445,16 +445,13 @@ export function ProjectsSection() {
                           className="w-full h-full object-contain bg-gradient-to-br from-gray-900/50 to-gray-800/50"
                         />
                         
-                        {/* Stronger dark overlay for content area */}
-                        <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/90 via-black/70 to-black/30"></div>
-                        
-                        {/* Additional overlay for better text contrast */}
-                        <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+                        {/* Blur effect overlay for content area instead of black overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 h-2/3 backdrop-blur-sm bg-white/5"></div>
                         
                         {/* Overlay content on bottom half of image, left-aligned */}
                         <div className="absolute inset-0 flex flex-col justify-end items-start p-6">
                           {/* Project title */}
-                          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 z-10 drop-shadow-2xl">
+                          <h2 className="text-2xl md:text-3xl font-bold text-[#3B5E51] mb-3 z-10 drop-shadow-2xl">
                             {selectedProjectData.title}
                           </h2>
                           
@@ -469,7 +466,7 @@ export function ProjectsSection() {
                               <Badge 
                                 key={tech} 
                                 variant="outline" 
-                                className="text-xs border-white/60 text-white bg-black/40 backdrop-blur-sm font-medium"
+                                className="text-xs border-[#3B5E51]/60 text-[#3B5E51] bg-white/20 backdrop-blur-sm font-medium"
                               >
                                 {tech}
                               </Badge>
@@ -486,7 +483,7 @@ export function ProjectsSection() {
                             rel="noopener noreferrer"
                             className="p-2 hover:scale-110 transition-transform duration-300 group"
                           >
-                            <Github className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
+                            <Github className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
                           </a>
                           
                           {/* Live Demo Icon */}
@@ -500,7 +497,7 @@ export function ProjectsSection() {
                                 : "opacity-50 cursor-not-allowed"
                             }`}
                           >
-                            <ExternalLink className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
+                            <ExternalLink className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
                           </a>
                         </div>
                       </div>
