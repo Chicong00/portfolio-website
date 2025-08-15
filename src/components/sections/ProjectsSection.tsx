@@ -455,56 +455,66 @@ export function ProjectsSection() {
                         </div>
                       </div>
                     ) : (
-                      // Folder/project overview: keep all info as before
-                      <div className="space-y-6 p-6">
-                        <div className="relative h-48 rounded-lg overflow-hidden">
-                          <img
-                            src={selectedProjectData.image}
-                            alt={selectedProjectData.title}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/30"></div>
+                      // Folder/project overview: full background image with overlaid content
+                      <div className="relative h-full w-full">
+                        {/* Full background image */}
+                        <img
+                          src={selectedProjectData.image}
+                          alt={selectedProjectData.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        
+                        {/* Overlay content on top of image */}
+                        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center p-8">
+                          {/* Project title */}
+                          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 z-10">
+                            {selectedProjectData.title}
+                          </h2>
+                          
+                          {/* Project description */}
+                          <p className="text-lg text-muted-foreground mb-6 max-w-2xl z-10">
+                            {selectedProjectData.description}
+                          </p>
+                          
+                          {/* Skills/Technologies */}
+                          <div className="flex flex-wrap gap-3 justify-center mb-8 z-10">
+                            {selectedProjectData.technologies.map((tech) => (
+                              <Badge 
+                                key={tech} 
+                                variant="outline" 
+                                className="text-sm border-primary/50 text-primary bg-background/20 backdrop-blur-sm"
+                              >
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                         
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="font-semibold text-sm text-muted-foreground mb-2">Project Files:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {selectedProjectData.files.map((file) => (
-                                <Badge 
-                                  key={file.name} 
-                                  variant="secondary" 
-                                  className="text-xs cursor-pointer hover:bg-primary/20"
-                                  onClick={() => setSelectedFile(file.name)}
-                                >
-                                  {file.name}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
+                        {/* Action icons in bottom right corner */}
+                        <div className="absolute bottom-6 right-6 flex gap-4 z-20">
+                          {/* View Code Icon */}
+                          <a
+                            href={selectedProjectData.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 rounded-full bg-background/20 backdrop-blur-sm border border-primary/30 hover:bg-primary/20 transition-all duration-300 group"
+                          >
+                            <Database className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                          </a>
                           
-                          <div className="flex gap-3">
-                            <Button asChild variant="outline" className="flex-1">
-                              <a
-                                href={selectedProjectData.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Github className="mr-2 h-4 w-4" />
-                                View Code
-                              </a>
-                            </Button>
-                            <Button asChild className="flex-1" disabled={!selectedProjectData.liveUrl || selectedProjectData.liveUrl === "#"}>
-                              <a
-                                href={selectedProjectData.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <ExternalLink className="mr-2 h-4 w-4" />
-                                Live Demo
-                              </a>
-                            </Button>
-                          </div>
+                          {/* Live Demo Icon */}
+                          <a
+                            href={selectedProjectData.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`p-3 rounded-full backdrop-blur-sm border transition-all duration-300 group ${
+                              selectedProjectData.liveUrl && selectedProjectData.liveUrl !== "#"
+                                ? "bg-primary/20 border-primary/30 hover:bg-primary/30"
+                                : "bg-muted/20 border-muted/30 opacity-50 cursor-not-allowed"
+                            }`}
+                          >
+                            <ExternalLink className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                          </a>
                         </div>
                       </div>
                     )}
