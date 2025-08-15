@@ -442,28 +442,28 @@ export function ProjectsSection() {
                         <img
                           src={selectedProjectData.image}
                           alt={selectedProjectData.title}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-cover object-center"
                         />
                         
                         {/* Overlay content on bottom half of image, left-aligned */}
-                        <div className="absolute inset-0 flex flex-col justify-end items-start p-8">
+                        <div className="absolute inset-0 flex flex-col justify-end items-start p-6">
                           {/* Project title */}
-                          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 z-10">
+                          <h2 className="text-2xl md:text-3xl font-bold text-[#3B5E51] mb-3 z-10 drop-shadow-lg">
                             {selectedProjectData.title}
                           </h2>
                           
                           {/* Project description */}
-                          <p className="text-lg text-muted-foreground mb-6 max-w-2xl z-10">
+                          <p className="text-base text-[#F4D1A6] mb-4 max-w-[90%] z-10 drop-shadow-lg leading-relaxed">
                             {selectedProjectData.description}
                           </p>
                           
                           {/* Skills/Technologies */}
-                          <div className="flex flex-wrap gap-3 mb-8 z-10">
+                          <div className="flex flex-wrap gap-2 mb-6 z-10">
                             {selectedProjectData.technologies.map((tech) => (
                               <Badge 
                                 key={tech} 
                                 variant="outline" 
-                                className="text-sm border-primary/50 text-primary bg-background/20 backdrop-blur-sm"
+                                className="text-xs border-[#3B5E51]/50 text-[#3B5E51] bg-background/30 backdrop-blur-sm"
                               >
                                 {tech}
                               </Badge>
@@ -478,9 +478,9 @@ export function ProjectsSection() {
                             href={selectedProjectData.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-3 rounded-full bg-background/20 backdrop-blur-sm border border-primary/30 hover:bg-primary/20 transition-all duration-300 group"
+                            className="p-2 hover:scale-110 transition-transform duration-300 group"
                           >
-                            <Github className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                            <Github className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-lg" />
                           </a>
                           
                           {/* Live Demo Icon */}
@@ -488,13 +488,13 @@ export function ProjectsSection() {
                             href={selectedProjectData.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`p-3 rounded-full backdrop-blur-sm border transition-all duration-300 group ${
+                            className={`p-2 hover:scale-110 transition-transform duration-300 group ${
                               selectedProjectData.liveUrl && selectedProjectData.liveUrl !== "#"
-                                ? "bg-primary/20 border-primary/30 hover:bg-primary/30"
-                                : "bg-muted/20 border-muted/30 opacity-50 cursor-not-allowed"
+                                ? ""
+                                : "opacity-50 cursor-not-allowed"
                             }`}
                           >
-                            <ExternalLink className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                            <ExternalLink className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-lg" />
                           </a>
                         </div>
                       </div>
