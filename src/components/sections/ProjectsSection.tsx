@@ -437,13 +437,16 @@ export function ProjectsSection() {
                       </div>
                     ) : (
                       // Folder/project overview: full background image with overlaid content
-                      <div className="relative h-full w-full">
+                      <div className="relative h-full w-full overflow-hidden">
                         {/* Full background image */}
                         <img
                           src={selectedProjectData.image}
                           alt={selectedProjectData.title}
-                          className="absolute inset-0 w-full h-full object-cover object-center"
+                          className="w-full h-full object-cover object-center"
                         />
+                        
+                        {/* Dark overlay at bottom for better text readability */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
                         
                         {/* Overlay content on bottom half of image, left-aligned */}
                         <div className="absolute inset-0 flex flex-col justify-end items-start p-6">
