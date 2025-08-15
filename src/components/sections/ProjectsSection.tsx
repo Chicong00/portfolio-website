@@ -407,25 +407,6 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header - ONLY for folder, not file */}
-                  {!selectedFile && (
-                    <div className="p-6 border-b border-border/50 flex-shrink-0">
-                      <h2 className="text-2xl font-bold text-primary mb-2">
-                        {selectedProjectData.title}
-                      </h2>
-                      <p className="text-muted-foreground mb-4">
-                        {selectedProjectData.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProjectData.technologies.map((tech) => (
-                          <Badge key={tech} variant="outline" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* File Content or Project Overview */}
                   <div className="flex-1 p-0 min-h-0">
                     {selectedFile ? (
@@ -455,56 +436,69 @@ export function ProjectsSection() {
                         </div>
                       </div>
                     ) : (
-                      // Folder/project overview: keep all info as before
-                      <div className="space-y-6 p-6">
-                        <div className="relative h-48 rounded-lg overflow-hidden">
-                          <img
-                            src={selectedProjectData.image}
-                            alt={selectedProjectData.title}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/30"></div>
+                      // Folder/project overview: full background image with overlaid content
+                      <div className="relative h-full w-full overflow-hidden">
+                        {/* Full background image with proper scaling */}
+                        <img
+                          src={selectedProjectData.image}
+                          alt={selectedProjectData.title}
+                          className="w-full h-full object-contain bg-gradient-to-br from-gray-900/50 to-gray-800/50"
+                        />
+                        
+                        {/* Blur effect overlay for content area instead of black overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 h-2/3 backdrop-blur-sm bg-white/5"></div>
+                        
+                        {/* Overlay content on bottom half of image, left-aligned */}
+                        <div className="absolute inset-0 flex flex-col justify-end items-start p-6">
+                          {/* Project title */}
+                          <h2 className="text-2xl md:text-3xl font-bold text-[#3B5E51] mb-3 z-10 drop-shadow-2xl">
+                            {selectedProjectData.title}
+                          </h2>
+                          
+                          {/* Project description */}
+                          <p className="text-base text-[#F4D1A6] mb-4 max-w-[90%] z-10 drop-shadow-2xl leading-relaxed font-medium">
+                            {selectedProjectData.description}
+                          </p>
+                          
+                          {/* Skills/Technologies */}
+                          <div className="flex flex-wrap gap-2 mb-6 z-10">
+                            {selectedProjectData.technologies.map((tech) => (
+                              <Badge 
+                                key={tech} 
+                                variant="outline" 
+                                className="text-xs border-[#3B5E51]/60 text-[#3B5E51] bg-white/20 backdrop-blur-sm font-medium"
+                              >
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                         
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="font-semibold text-sm text-muted-foreground mb-2">Project Files:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {selectedProjectData.files.map((file) => (
-                                <Badge 
-                                  key={file.name} 
-                                  variant="secondary" 
-                                  className="text-xs cursor-pointer hover:bg-primary/20"
-                                  onClick={() => setSelectedFile(file.name)}
-                                >
-                                  {file.name}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
+                        {/* Action icons in bottom right corner */}
+                        <div className="absolute bottom-6 right-6 flex gap-4 z-20">
+                          {/* View Code Icon - GitHub */}
+                          <a
+                            href={selectedProjectData.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 hover:scale-110 transition-transform duration-300 group"
+                          >
+                            <Github className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
+                          </a>
                           
-                          <div className="flex gap-3">
-                            <Button asChild variant="outline" className="flex-1">
-                              <a
-                                href={selectedProjectData.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Github className="mr-2 h-4 w-4" />
-                                View Code
-                              </a>
-                            </Button>
-                            <Button asChild className="flex-1" disabled={!selectedProjectData.liveUrl || selectedProjectData.liveUrl === "#"}>
-                              <a
-                                href={selectedProjectData.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <ExternalLink className="mr-2 h-4 w-4" />
-                                Live Demo
-                              </a>
-                            </Button>
-                          </div>
+                          {/* Live Demo Icon */}
+                          <a
+                            href={selectedProjectData.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`p-2 hover:scale-110 transition-transform duration-300 group ${
+                              selectedProjectData.liveUrl && selectedProjectData.liveUrl !== "#"
+                                ? ""
+                                : "opacity-50 cursor-not-allowed"
+                            }`}
+                          >
+                            <ExternalLink className="h-5 w-5 text-[#3B5E51] group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl" />
+                          </a>
                         </div>
                       </div>
                     )}
