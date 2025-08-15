@@ -407,25 +407,6 @@ export function ProjectsSection() {
             >
               {selectedProjectData && (
                 <div className="h-full flex flex-col">
-                  {/* Project Header - ONLY for folder, not file */}
-                  {!selectedFile && (
-                    <div className="p-6 border-b border-border/50 flex-shrink-0">
-                      <h2 className="text-2xl font-bold text-primary mb-2">
-                        {selectedProjectData.title}
-                      </h2>
-                      <p className="text-muted-foreground mb-4">
-                        {selectedProjectData.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProjectData.technologies.map((tech) => (
-                          <Badge key={tech} variant="outline" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* File Content or Project Overview */}
                   <div className="flex-1 p-0 min-h-0">
                     {selectedFile ? (
@@ -464,8 +445,8 @@ export function ProjectsSection() {
                           className="absolute inset-0 w-full h-full object-cover"
                         />
                         
-                        {/* Overlay content on top of image */}
-                        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center p-8">
+                        {/* Overlay content on bottom half of image, left-aligned */}
+                        <div className="absolute inset-0 flex flex-col justify-end items-start p-8">
                           {/* Project title */}
                           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 z-10">
                             {selectedProjectData.title}
@@ -477,7 +458,7 @@ export function ProjectsSection() {
                           </p>
                           
                           {/* Skills/Technologies */}
-                          <div className="flex flex-wrap gap-3 justify-center mb-8 z-10">
+                          <div className="flex flex-wrap gap-3 mb-8 z-10">
                             {selectedProjectData.technologies.map((tech) => (
                               <Badge 
                                 key={tech} 
@@ -492,14 +473,14 @@ export function ProjectsSection() {
                         
                         {/* Action icons in bottom right corner */}
                         <div className="absolute bottom-6 right-6 flex gap-4 z-20">
-                          {/* View Code Icon */}
+                          {/* View Code Icon - GitHub */}
                           <a
                             href={selectedProjectData.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 rounded-full bg-background/20 backdrop-blur-sm border border-primary/30 hover:bg-primary/20 transition-all duration-300 group"
                           >
-                            <Database className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                            <Github className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
                           </a>
                           
                           {/* Live Demo Icon */}
